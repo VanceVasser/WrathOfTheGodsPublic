@@ -30,13 +30,16 @@ public partial class SolynBooksSystem : ModSystem
             if (Main.gamePaused)
                 return;
 
+            if(!(type == ModContent.TileType<SteamGeyser1>() || type == ModContent.TileType<SteamGeyser2>() || type == ModContent.TileType<SteamGeyser3>()))
+                return;
+
             if (!Main.rand.NextBool(SulfuricLeafletReleaseChance))
                 return;
 
             Tile t = Framing.GetTileSafely(x, y);
             Vector2 spawnPosition = new Vector2(x * 16f + 24f, y * 16f - 4f);
             bool releasesSteam = t.TileFrameX % 36 == 0 && t.TileFrameY % 36 == 0 && Collision.CanHitLine(spawnPosition, 1, 1, spawnPosition - Vector2.UnitY * 100f, 1, 1);
-            if (releasesSteam && type == ModContent.TileType<SteamGeyser1>() || type == ModContent.TileType<SteamGeyser2>() || type == ModContent.TileType<SteamGeyser3>())
+            if (releasesSteam)
             {
                 int leaflet = Item.NewItem(new EntitySource_TileUpdate(x, y), spawnPosition, SolynBookAutoloader.Books["SulfuricLeaflet"].Type);
                 if (Main.item.IndexInRange(leaflet))
